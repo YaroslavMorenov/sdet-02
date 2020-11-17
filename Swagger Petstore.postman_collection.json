@@ -11,6 +11,24 @@
 			"item": [
 				{
 					"name": "Create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2d91e8cd-ddd8-4810-ab57-2e8977096286",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Type is unknown\"), function(){",
+									"    pm.expect(pm.responce.json().type).eql('unknown')",
+									"};"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -20,11 +38,16 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"<long>\",\n    \"username\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"email\": \"<string>\",\n    \"password\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"userStatus\": \"<integer>\"\n}"
+							"raw": "{\r\n  \"id\": 1994,\r\n  \"username\": \"test\",\r\n  \"firstName\": \"v\",\r\n  \"lastName\": \"c\",\r\n  \"email\": \"a\",\r\n  \"password\": \"z\",\r\n  \"phone\": \"2\",\r\n  \"userStatus\": 12\r\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/user",
@@ -33,6 +56,13 @@
 							],
 							"path": [
 								"user"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
 							]
 						},
 						"description": "This can only be done by the logged in user."
@@ -73,6 +103,23 @@
 				},
 				{
 					"name": "Logs user into the system",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "91e5f661-a226-48cc-8b06-4606fa18be06",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"logged session\"), function(){",
+									"    pm.expect(pm.responce.json().message).eql('logged in user session:')",
+									"};"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -80,7 +127,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/user/login?username=<string>&password=<string>",
+							"raw": "{{baseUrl}}/user/login?username=1994&password=z",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -91,12 +138,12 @@
 							"query": [
 								{
 									"key": "username",
-									"value": "<string>",
+									"value": "1994",
 									"description": "(Required) The user name for login"
 								},
 								{
 									"key": "password",
-									"value": "<string>",
+									"value": "z",
 									"description": "(Required) The password for login in clear text"
 								}
 							]
@@ -193,6 +240,25 @@
 				},
 				{
 					"name": "Logs out current logged in user session",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "110c542a-9fed-489a-8e88-2c541cd87045",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Message ok\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"ok\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -242,6 +308,33 @@
 					]
 				}
 			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "aa276627-b39a-4b54-835c-337756c8f777",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "12daafe0-3d63-41b9-b11f-080a53d3aa59",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Type is unknown\"), function(){",
+							"    pm.expect(pm.responce.json().message).eql('logged in user session:')",
+							"};"
+						]
+					}
+				}
+			],
 			"protocolProfileBehavior": {}
 		},
 		{
@@ -249,6 +342,24 @@
 			"item": [
 				{
 					"name": "Updated user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "06f7b3d2-be9b-4876-ab5c-58391c3897e2",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Type unknown\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.type).to.eql(\"unknown\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -262,23 +373,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"<long>\",\n    \"username\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"email\": \"<string>\",\n    \"password\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"userStatus\": \"<integer>\"\n}"
+							"raw": "{\r\n  \"id\": 1994,\r\n  \"username\": \"test\",\r\n  \"firstName\": \"v\",\r\n  \"lastName\": \"c\",\r\n  \"email\": \"a\",\r\n  \"password\": \"z\",\r\n  \"phone\": \"1234\",\r\n  \"userStatus\": 12\r\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/user/:username",
+							"raw": "{{baseUrl}}/user/test",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"user",
-								":username"
-							],
-							"variable": [
-								{
-									"key": "username",
-									"value": "<string>",
-									"description": "(Required) name that need to be updated"
-								}
+								"test"
 							]
 						},
 						"description": "This can only be done by the logged in user."
@@ -362,6 +466,24 @@
 				},
 				{
 					"name": "Get user by user name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "78989882-d137-46f3-8d15-b6979e3a7e84",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Type unknown\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.phone).to.eql(\"1234\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -369,20 +491,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/user/:username",
+							"raw": "{{baseUrl}}/user/test",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"user",
-								":username"
-							],
-							"variable": [
-								{
-									"key": "username",
-									"value": "<string>",
-									"description": "(Required) The name that needs to be fetched. Use user1 for testing. "
-								}
+								"test"
 							]
 						}
 					},
@@ -496,6 +611,23 @@
 			"item": [
 				{
 					"name": "Logs user into the system",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4894fa89-e491-4548-8cc1-edfa863fcfb9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Type is unknown\"), function(){",
+									"    pm.expect(pm.responce.json().message).eql('logged in user session:')",
+									"};"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -503,7 +635,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/user/login?username=<string>&password=<string>",
+							"raw": "{{baseUrl}}/user/login?username=1994&password=z",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -514,12 +646,12 @@
 							"query": [
 								{
 									"key": "username",
-									"value": "<string>",
+									"value": "1994",
 									"description": "(Required) The user name for login"
 								},
 								{
 									"key": "password",
-									"value": "<string>",
+									"value": "z",
 									"description": "(Required) The password for login in clear text"
 								}
 							]
@@ -616,6 +748,20 @@
 				},
 				{
 					"name": "Add a new pet to the store",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "58925a4c-cb5c-40a0-83a1-05268c26d573",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "oauth2"
@@ -629,7 +775,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"<string>\",\n    \"photoUrls\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"id\": \"<long>\",\n    \"category\": {\n        \"id\": \"<long>\",\n        \"name\": \"<string>\"\n    },\n    \"tags\": [\n        {\n            \"id\": \"<long>\",\n            \"name\": \"<string>\"\n        },\n        {\n            \"id\": \"<long>\",\n            \"name\": \"<string>\"\n        }\n    ],\n    \"status\": \"<string>\"\n}"
+							"raw": "{\n    \"name\": \"Name\",\n    \"photoUrls\": [\n        \"photos\"\n    ],\n    \"id\": \"2000\",\n    \"category\": {\n        \"id\": \"1\",\n        \"name\": \"cat\"\n    },\n    \"tags\": [\n        {\n            \"id\": \"1\",\n            \"name\": \"color\"\n        },\n        {\n            \"id\": \"2\",\n            \"name\": \"years\"\n        }\n    ],\n    \"status\": \"good\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/pet",
@@ -673,6 +819,25 @@
 				},
 				{
 					"name": "Find pet by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "287f7f34-3bc9-44a0-acb1-149e80f2b3fa",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Check JSON\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(2000),",
+									"    pm.expect(jsonData.name).to.eql(\"Name\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -685,20 +850,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/pet/:petId",
+							"raw": "{{baseUrl}}/pet/2000",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"pet",
-								":petId"
-							],
-							"variable": [
-								{
-									"key": "petId",
-									"value": "<long>",
-									"description": "(Required) ID of pet to return"
-								}
+								"2000"
 							]
 						},
 						"description": "Returns a single pet"
@@ -807,6 +965,25 @@
 				},
 				{
 					"name": "Logs out current logged in user session",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8f77ec0f-5af5-403e-97d2-b9eef7b74cdb",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Message ok\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"ok\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -870,7 +1047,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/user/login?username=<string>&password=<string>",
+							"raw": "{{baseUrl}}/user/login?username=1994&password=z",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -881,12 +1058,12 @@
 							"query": [
 								{
 									"key": "username",
-									"value": "<string>",
+									"value": "1994",
 									"description": "(Required) The user name for login"
 								},
 								{
 									"key": "password",
-									"value": "<string>",
+									"value": "z",
 									"description": "(Required) The password for login in clear text"
 								}
 							]
@@ -983,6 +1160,26 @@
 				},
 				{
 					"name": "Place an order for a pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8562b337-fc08-4fc0-8529-a2b34ee5eada",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Check JSON\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(1),",
+									"    pm.expect(jsonData.petId).to.eql(2000),",
+									"    pm.expect(jsonData.status).to.eql(\"placed\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -996,7 +1193,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"<long>\",\n    \"petId\": \"<long>\",\n    \"quantity\": \"<integer>\",\n    \"shipDate\": \"<dateTime>\",\n    \"status\": \"<string>\",\n    \"complete\": \"<boolean>\"\n}"
+							"raw": "{\r\n  \"id\": 1,\r\n  \"petId\": 2000,\r\n  \"quantity\": 1,\r\n  \"shipDate\": \"2020-11-15T07:00:36.093Z\",\r\n  \"status\": \"placed\",\r\n  \"complete\": true\r\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/store/order",
@@ -1078,6 +1275,26 @@
 				},
 				{
 					"name": "Find purchase order by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ffe23d39-937e-4087-bc08-dad99cbe8ac7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Check JSON\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(1),",
+									"    pm.expect(jsonData.petId).to.eql(2000),",
+									"    pm.expect(jsonData.status).to.eql(\"placed\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -1085,21 +1302,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/store/order/:orderId",
+							"raw": "{{baseUrl}}/store/order/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"store",
 								"order",
-								":orderId"
-							],
-							"variable": [
-								{
-									"key": "orderId",
-									"value": "<long>",
-									"description": "(Required) ID of pet that needs to be fetched"
-								}
+								"1"
 							]
 						},
 						"description": "For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions"
@@ -1211,6 +1421,20 @@
 				},
 				{
 					"name": "Logs out current logged in user session",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bfa092ef-c45d-4733-af56-0810663b9a0c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -1267,6 +1491,24 @@
 			"item": [
 				{
 					"name": "Delete purchase order by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "00d30546-5651-4686-a09f-3e675f537654",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Check JSON\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"1\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -1274,21 +1516,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/store/order/:orderId",
+							"raw": "{{baseUrl}}/store/order/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"store",
 								"order",
-								":orderId"
-							],
-							"variable": [
-								{
-									"key": "orderId",
-									"value": "<long>",
-									"description": "(Required) ID of the order that needs to be deleted"
-								}
+								"1"
 							]
 						},
 						"description": "For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors"
@@ -1366,6 +1601,24 @@
 				},
 				{
 					"name": "Deletes a pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a0925359-6a48-4dc1-bf26-26393eb66efc",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Check JSON\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"2000\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "oauth2"
@@ -1378,20 +1631,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/pet/:petId",
+							"raw": "{{baseUrl}}/pet/2000",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"pet",
-								":petId"
-							],
-							"variable": [
-								{
-									"key": "petId",
-									"value": "<long>",
-									"description": "(Required) Pet id to delete"
-								}
+								"2000"
 							]
 						}
 					},
@@ -1489,20 +1735,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/user/:username",
+							"raw": "{{baseUrl}}/user/test",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"user",
-								":username"
-							],
-							"variable": [
-								{
-									"key": "username",
-									"value": "<string>",
-									"description": "(Required) The name that needs to be deleted"
-								}
+								"test"
 							]
 						},
 						"description": "This can only be done by the logged in user."
@@ -1578,6 +1817,24 @@
 				},
 				{
 					"name": "Get user by user name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e834ac18-24cb-410e-ae16-6bf5df73d51f",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"pm.test(\"Check JSON\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"User not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -1585,20 +1842,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/user/:username",
+							"raw": "{{baseUrl}}/user/test",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"user",
-								":username"
-							],
-							"variable": [
-								{
-									"key": "username",
-									"value": "<string>",
-									"description": "(Required) The name that needs to be fetched. Use user1 for testing. "
-								}
+								"test"
 							]
 						}
 					},
